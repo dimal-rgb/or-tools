@@ -143,6 +143,7 @@ void AddSizeTwoTable(
             clauses.push_back(Literal(index));
           }
           clauses.push_back(Literal(lit).Negated());
+          std::sort(clauses.begin(), clauses.end());
           model->Add(ClauseConstraint(clauses));
           clause_added++;
           if (supports.size() > max_support_size / 2) {
@@ -151,10 +152,18 @@ void AddSizeTwoTable(
         }
       };
 
+  std::map<LiteralIndex, absl::flat_hash_set<LiteralIndex>> left_to_right_map;
   for (const auto& it : left_to_right) {
-    add_support(it.first, it.second, values_per_var[1].size());
+      left_to_right_map.insert(it);
   }
+  for (const auto& it : left_to_right_map) {
+    add_support(it.first, it.second, values_per_var[1].size());
+ }
+   std::map<LiteralIndex, absl::flat_hash_set<LiteralIndex>> right_to_left_map;
   for (const auto& it : right_to_left) {
+      right_to_left_map.insert(it);
+  }
+  for (const auto& it : right_to_left_map) {
     add_support(it.first, it.second, values_per_var[0].size());
   }
   VLOG(2) << "Table: 2 variables, " << tuples.size() << " tuples encoded using "
