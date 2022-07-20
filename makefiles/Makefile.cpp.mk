@@ -20,7 +20,9 @@ endif
 
 # All libraries and dependecies
 OR_TOOLS_LIBS = $(LIB_DIR)/$(LIB_PREFIX)ortools.$L
+OR_TOOLS_AR = $(LIB_DIR)/$(LIB_PREFIX)ortools.a
 OR_TOOLS_LNK += $(PRE_LIB)ortools$(POST_LIB)
+LIB_JEMALLOC_DIR = /usr/local/lib
 
 HAS_CCC = true
 ifndef CCC
@@ -40,7 +42,7 @@ check_cc: cc
 test_cc: cc
 test_fz: cc
 else
-cc: $(OR_TOOLS_LIBS)
+cc: $(OR_TOOLS_LIBS) $(OR_TOOLS_AR)
 check_cc: check_cc_pimpl
 test_cc: test_cc_pimpl
 test_fz: test_fz_pimpl
@@ -190,6 +192,36 @@ $(OR_TOOLS_LIBS): \
  $(CP_LIB_OBJS) \
  $(DEPENDENCIES_LNK) \
  $(LDFLAGS)
+
+$(OR_TOOLS_AR): \
+ dependencies/check.log \
+ $(BASE_LIB_OBJS) \
+ $(PORT_LIB_OBJS) \
+ $(UTIL_LIB_OBJS) \
+ $(DATA_LIB_OBJS) \
+ $(LP_DATA_LIB_OBJS) \
+ $(GLOP_LIB_OBJS) \
+ $(BOP_LIB_OBJS) \
+ $(LP_LIB_OBJS) \
+ $(GRAPH_LIB_OBJS) \
+ $(ALGORITHMS_LIB_OBJS) \
+ $(SAT_LIB_OBJS) \
+ $(CP_LIB_OBJS) | $(LIB_DIR)
+	ar rcs \
+ $(LIB_DIR)$S$(LIB_PREFIX)ortools.a \
+ $(LIB_JEMALLOC_DIR)/libjemalloc_pic.a \
+ $(BASE_LIB_OBJS) \
+ $(PORT_LIB_OBJS) \
+ $(UTIL_LIB_OBJS) \
+ $(DATA_LIB_OBJS) \
+ $(LP_DATA_LIB_OBJS) \
+ $(GLOP_LIB_OBJS) \
+ $(GRAPH_LIB_OBJS) \
+ $(ALGORITHMS_LIB_OBJS) \
+ $(SAT_LIB_OBJS) \
+ $(BOP_LIB_OBJS) \
+ $(LP_LIB_OBJS) \
+ $(CP_LIB_OBJS)
 
 #####################
 ##  Flatzinc code  ##
