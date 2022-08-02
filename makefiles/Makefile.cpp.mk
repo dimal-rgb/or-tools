@@ -22,7 +22,7 @@ endif
 OR_TOOLS_LIBS = $(LIB_DIR)/$(LIB_PREFIX)ortools.$L
 OR_TOOLS_AR = $(LIB_DIR)/$(LIB_PREFIX)ortools.a
 OR_TOOLS_LNK += $(PRE_LIB)ortools$(POST_LIB)
-LIB_JEMALLOC_DIR = /usr/local/lib
+LIB_JEMALLOC_DIR = external/jemalloc/lib
 
 HAS_CCC = true
 ifndef CCC
